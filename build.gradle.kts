@@ -17,6 +17,13 @@ tasks.shadowJar {
     configurations = listOf(shadowBundle)
     mergeServiceFiles()
 }
+tasks.jar {
+    manifest {
+        attributes(
+            "Main-Class" to "dev.kofeychi.mcgui.test.DevJarEntrypoint",
+        )
+    }
+}
 dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     shadowBundle("com.google.code.gson:gson:2.10.1")
@@ -47,5 +54,5 @@ tasks.register<JavaExec>("runFromJar") {
     val jarTask = tasks.jar.get()
     classpath = files(jarTask.archiveFile) + sourceSets.main.get().runtimeClasspath
 
-    mainClass.set("dev.kofeychi.mcgui.DevJarEntrypoint")
+    mainClass.set("dev.kofeychi.mcgui.test.DevJarEntrypoint")
 }

@@ -40,3 +40,5 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+/src/main/java/dev/kofeychi/mcgui/unused/
+/src/main/java/dev/kofeychi/mcgui/unused
