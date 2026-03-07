@@ -4,6 +4,7 @@ import dev.kofeychi.mcgui.api.render.shader.CompiledProgram;
 import dev.kofeychi.mcgui.api.render.shader.CompiledShader;
 import dev.kofeychi.mcgui.api.render.shader.Program;
 import dev.kofeychi.mcgui.api.render.shader.Uniforms;
+import dev.kofeychi.mcgui.api.render.vertex.format.Format;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 import java.util.List;
@@ -15,15 +16,22 @@ public class CompiledProgramImpl implements CompiledProgram {
     private final Object2ObjectOpenHashMap<String,Uniforms> uniforms = new Object2ObjectOpenHashMap<>();
     private final Program source;
     private final int id;
+    private final Format format;
 
-    public CompiledProgramImpl(Program source, int id) {
+    public CompiledProgramImpl(Program source, int id,Format format) {
         this.source = source;
         this.id = id;
+        this.format = format;
     }
 
     @Override
     public Program source() {
         return source;
+    }
+
+    @Override
+    public Format format() {
+        return format;
     }
 
     @Override

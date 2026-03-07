@@ -3,6 +3,7 @@ package dev.kofeychi.mcgui.impl.render.shader;
 import dev.kofeychi.mcgui.api.render.shader.CompiledShader;
 import dev.kofeychi.mcgui.api.render.shader.Shader;
 import dev.kofeychi.mcgui.api.render.shader.ShaderType;
+import dev.kofeychi.mcgui.api.render.vertex.format.Format;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;

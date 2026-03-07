@@ -1,17 +1,12 @@
 package dev.kofeychi.mcgui.test;
 
+import dev.kofeychi.mcgui.api.render.FpsController;
 import dev.kofeychi.mcgui.api.render.shader.Manager;
 import dev.kofeychi.mcgui.api.render.shader.Program;
 import dev.kofeychi.mcgui.api.render.shader.Shader;
 import dev.kofeychi.mcgui.api.render.shader.ShaderType;
-import dev.kofeychi.mcgui.todo.render.FpsController;
-import dev.kofeychi.mcgui.todo.render.buf.BufferedBuilder;
-import dev.kofeychi.mcgui.todo.render.buf.BuiltBuffer;
-import dev.kofeychi.mcgui.todo.render.buf.format.VertexFormat;
-import dev.kofeychi.mcgui.todo.render.shader.ShaderManager;
-import dev.kofeychi.mcgui.todo.resource.Id;
-import dev.kofeychi.mcgui.todo.resource.PackType;
-import dev.kofeychi.mcgui.todo.resource.types.InjarPackSource;
+import dev.kofeychi.mcgui.api.render.vertex.Builder;
+import dev.kofeychi.mcgui.api.render.vertex.format.Formats;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
@@ -41,18 +36,19 @@ public class ResTest {
         glfwMakeContextCurrent(window);
         GL.createCapabilities();
 
-        // Инициализация "Unsafe" строителя буферов (без ByteBuffer)
-        BufferedBuilder builder = new BufferedBuilder(2048,VertexFormat.POSITION_COLOR_TEX,GL_TRIANGLES);
         var ma = new Matrix4f();
         ma.ortho(0, 800,800, 0, -Integer.MAX_VALUE, Integer.MAX_VALUE);
         ma.scale(4);
-        builder.vertex(ma,0,0, 1.0f).color(1,0,0,1).texture(0,0).push();
-        builder.vertex(ma,0,50, 1.0f).color(0,1,0,1).texture(1,0).push();
-        builder.vertex(ma,50,0, 1.0f).color(0,0,1,1).texture(.5f,1).push();
-        builder.vertex(ma, 50,0, -2.0f).color(1,0,0,1).texture(0,0).push();
-        builder.vertex(ma, 50,50, -2.0f).color(0,1,0,1).texture(1,0).push();
-        builder.vertex(ma,50+50,0, -2.0f).color(0,0,1,1).texture(.5f,1).push();
-        BuiltBuffer mesh = builder.build();
+
+
+
+        var b = Builder.from(1024,Formats.POS_COLOR_TEX);
+        b.vertex(ma,0,0,0).color(1,0,0,1).texture(0,0).push();
+        b.vertex(ma,50,0,0).color(0,1,0,1).texture(1,0).push();
+        b.vertex(ma,0,50,0).color(0,0,1,1).texture(.5f,1).push();
+        var built = b.build();
+        var mesh = built.toMesh();
+        mesh.upload();
 
         var shm = Manager.empty();
         var ref = shm.load(
@@ -66,18 +62,19 @@ public class ResTest {
                                 ShaderType.FRAGMENT,
                                 read(ResTest.class.getResourceAsStream("/pack/client/builtin/shader/core/test.fsh"))
                         )
-                ))
+                ), Formats.POS_COLOR_TEX)
         );
+
+
 
         FpsController time = new FpsController(()->75);
 
-        var m = mesh.toMesh();
         while (!glfwWindowShouldClose(window)) {
             time.update();
             ref.bind();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             ref.getUniforms("uTime").setFloat((float) glfwGetTime());
-            m.draw();
+            mesh.draw();
 
             glfwSwapBuffers(window);
             glfwPollEvents();
@@ -85,8 +82,8 @@ public class ResTest {
             time.sync();
         }
 
-        m.cleanup();
-        builder.close();
+        mesh.close();
+        b.close();
         shm.close();
         glfwTerminate();
     }

@@ -1,22 +1,22 @@
-package dev.kofeychi.mcgui.todo.render.buf;
+package dev.kofeychi.mcgui.impl.render.vertex;
 
-import dev.kofeychi.mcgui.todo.render.buf.format.VertexFormat;
+import dev.kofeychi.mcgui.api.render.vertex.Builder;
+import dev.kofeychi.mcgui.api.render.vertex.Built;
+import dev.kofeychi.mcgui.api.render.vertex.format.Format;
 import org.lwjgl.system.MemoryUtil;
 
-public class BufferedBuilder implements AutoCloseable,BufBuilder {
+public class BuilderImpl implements Builder {
     private long address; // Native memory address
     private int capacity; // Total bytes allocated
     private int pointer;  // Current write offset in bytes
     private int vertexCount;
 
-    private final VertexFormat format;
-    private final int mode;
+    private final Format format;
 
-    public BufferedBuilder(int initialCapacity, VertexFormat format, int mode) {
+    public BuilderImpl(int initialCapacity, Format format) {
         this.capacity = initialCapacity;
         this.address = MemoryUtil.nmemAlloc(initialCapacity);
         this.format = format;
-        this.mode = mode;
     }
 
     private void ensureCapacity(int additionalBytes) {
@@ -28,7 +28,8 @@ public class BufferedBuilder implements AutoCloseable,BufBuilder {
         }
     }
 
-    public BufferedBuilder vertex(float x, float y, float z) {
+    @Override
+    public Builder vertex(float x, float y, float z) {
         ensureCapacity(12);
         MemoryUtil.memPutFloat(address + pointer, x);
         MemoryUtil.memPutFloat(address + pointer + 4, y);
@@ -37,7 +38,8 @@ public class BufferedBuilder implements AutoCloseable,BufBuilder {
         return this;
     }
 
-    public BufferedBuilder color(float r, float g, float b, float a) {
+    @Override
+    public Builder color(float r, float g, float b, float a) {
         ensureCapacity(16);
         MemoryUtil.memPutFloat(address + pointer, r);
         MemoryUtil.memPutFloat(address + pointer + 4, g);
@@ -47,7 +49,8 @@ public class BufferedBuilder implements AutoCloseable,BufBuilder {
         return this;
     }
 
-    public BufferedBuilder texture(float u, float v) {
+    @Override
+    public Builder texture(float u, float v) {
         ensureCapacity(8);
         MemoryUtil.memPutFloat(address + pointer, u);
         MemoryUtil.memPutFloat(address + pointer + 4, v);
@@ -55,7 +58,8 @@ public class BufferedBuilder implements AutoCloseable,BufBuilder {
         return this;
     }
 
-    public BufferedBuilder normal(float x, float y, float z) {
+    @Override
+    public Builder normal(float x, float y, float z) {
         ensureCapacity(12);
         MemoryUtil.memPutFloat(address + pointer, x);
         MemoryUtil.memPutFloat(address + pointer + 4, y);
@@ -64,28 +68,27 @@ public class BufferedBuilder implements AutoCloseable,BufBuilder {
         return this;
     }
 
-    public BufBuilder push() {
+    @Override
+    public void push() {
         vertexCount++;
         if(((long) vertexCount *format.getStride())!=pointer){
             throw new RuntimeException("Buffer contains invalid data,expected: "+(vertexCount*format.getStride())+", actual: "+(pointer));
         }
-        return null;
     }
 
-    public BuiltBuffer build() {
-        int size = pointer;
-        long finishedAddress = MemoryUtil.nmemAlloc(size);
-        MemoryUtil.memCopy(address, finishedAddress, size);
+    @Override
+    public Built build() {
+        long finishedAddress = MemoryUtil.nmemAlloc(pointer);
+        MemoryUtil.memCopy(address, finishedAddress, pointer);
 
-        BuiltBuffer built = new BuiltBuffer(finishedAddress, size, vertexCount, format, mode);
+        Built built = Built.from(finishedAddress, pointer, vertexCount, format);
 
-        // Reset builder for next use
         pointer = 0;
         vertexCount = 0;
-
         return built;
     }
 
+    @Override
     public void close() {
         if (address != 0) {
             MemoryUtil.nmemFree(address);
