@@ -4,6 +4,6 @@ layout (location = 1) in vec4 aColor;
 out vec4 vertc;
 uniform float uTime;
 void main() {
-    gl_Position = vec4(aPos.x + sin(uTime)*0.5, aPos.y, aPos.z, 1.0);
+    gl_Position = vec4(aPos.x + sin(uTime/100)*0.5, aPos.y, aPos.z, 1.0);
     vertc = aColor;
 }

@@ -1,7 +1,15 @@
 package dev.kofeychi.mcgui.api.render.shader;
 
-public interface Shader extends AutoCloseable {
+import dev.kofeychi.mcgui.impl.render.shader.ShaderImpl;
+
+public interface Shader {
+    static Shader from(ShaderType type,String source) {
+        return new ShaderImpl(type, source);
+    }
+
     ShaderType getShaderType();
 
-    void close();
+    CompiledShader compile();
+
+    String getSource();
 }

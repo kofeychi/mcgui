@@ -5,5 +5,11 @@ public interface Reference {
 
     void unbind();
 
+    CompiledProgram getProgram();
+
+    Manager getManager();
+
+    int programId();
+
     Uniforms getUniforms(String name);
 }

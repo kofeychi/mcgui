@@ -1,11 +1,16 @@
 package dev.kofeychi.mcgui.api.render.shader;
 
+import dev.kofeychi.mcgui.impl.render.shader.ProgramImpl;
+
+import java.util.Collection;
 import java.util.List;
 
-public interface Program extends AutoCloseable {
-    List<Shader> getShaders();
+public interface Program {
+    static Program from(Collection<Shader> shaders) {
+        return new ProgramImpl(shaders.stream().map(Shader::compile).toList());
+    }
 
-    void close();
+    List<CompiledShader> getShaders();
 
-    Uniforms getUniforms(String name);
+    CompiledProgram compile();
 }

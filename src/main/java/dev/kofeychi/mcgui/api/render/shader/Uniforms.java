@@ -10,6 +10,8 @@ public interface Uniforms {
     // matrices
     String getName();
 
+    int programId();
+
     int location();
 
     void setInt(int value);
@@ -51,5 +53,4 @@ public interface Uniforms {
     default void setFloatVec2(Vector2ic vec) {
         setFloatVector2(vec.x(), vec.y());
     }
-
 }
