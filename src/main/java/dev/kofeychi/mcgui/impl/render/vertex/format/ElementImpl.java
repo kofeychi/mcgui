@@ -1,7 +1,7 @@
 package dev.kofeychi.mcgui.impl.render.vertex.format;
 
 import dev.kofeychi.mcgui.api.render.vertex.format.Element;
-import dev.kofeychi.mcgui.todo.render.buf.format.VertexElementType;
+import dev.kofeychi.mcgui.api.render.vertex.format.VertexElementType;
 
 public class ElementImpl implements Element {
     private final int index;

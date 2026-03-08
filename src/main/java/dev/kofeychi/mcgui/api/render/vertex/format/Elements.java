@@ -1,6 +1,5 @@
 package dev.kofeychi.mcgui.api.render.vertex.format;
 
-import dev.kofeychi.mcgui.todo.render.buf.format.VertexElementType;
 
 public interface Elements {
     Element POSITION = Element.from(

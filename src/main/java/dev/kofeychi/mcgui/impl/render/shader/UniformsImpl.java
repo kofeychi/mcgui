@@ -1,6 +1,10 @@
 package dev.kofeychi.mcgui.impl.render.shader;
 
 import dev.kofeychi.mcgui.api.render.shader.Uniforms;
+import org.joml.Matrix4f;
+import org.lwjgl.system.MemoryStack;
+
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL20.*;
 
@@ -13,6 +17,9 @@ public class UniformsImpl implements Uniforms {
         this.name = name;
         this.program = program;
         this.location = location;
+        if(location < 0) {
+            throw new RuntimeException("Unknown location");
+        }
     }
 
     @Override
@@ -68,5 +75,14 @@ public class UniformsImpl implements Uniforms {
     @Override
     public void setFloatVector4(float x, float y, float z, int w) {
         glUniform4f(location, x, y, z, w);
+    }
+
+    @Override
+    public void setFloatMat4(Matrix4f mat) {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            FloatBuffer fb = stack.mallocFloat(4*4);
+            mat.get(fb);
+            glUniformMatrix4fv(location, false, fb);
+        }
     }
 }

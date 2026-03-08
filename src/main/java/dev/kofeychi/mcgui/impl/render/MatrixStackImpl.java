@@ -51,7 +51,7 @@ public class MatrixStackImpl implements MatrixStack {
 
         @Override
         public Matrix4f getPositionMatrix() {
-            return null;
+            return position;
         }
 
         public void copyFrom(Entry source) {

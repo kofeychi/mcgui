@@ -4,6 +4,10 @@ import dev.kofeychi.mcgui.impl.render.MatrixStackImpl;
 import org.joml.Matrix4f;
 
 public interface MatrixStack {
+    static MatrixStack create() {
+        return new MatrixStackImpl();
+    }
+
     void push();
 
     Entry peek();

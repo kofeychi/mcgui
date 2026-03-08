@@ -1,19 +1,20 @@
 package dev.kofeychi.mcgui.api.render;
 
 import java.util.concurrent.locks.LockSupport;
+import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
 
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
 
 public class FpsController {
-    private final IntSupplier targetFps;
+    private final DoubleSupplier targetFps;
     private final double targetFrameTime;
     private double lastTime;
     private float deltaTime;
 
-    public FpsController(IntSupplier fpsSupplier) {
+    public FpsController(DoubleSupplier fpsSupplier) {
         this.targetFps = fpsSupplier;
-        this.targetFrameTime = targetFps.getAsInt() > 0 ? 1.0 / targetFps.getAsInt() : 0.0;
+        this.targetFrameTime = targetFps.getAsDouble() > 0 ? 1.0 / targetFps.getAsDouble() : 0.0;
         this.lastTime = glfwGetTime();
     }
 
@@ -24,7 +25,7 @@ public class FpsController {
     }
 
     public void sync() {
-        if (targetFps.getAsInt() <= 0) return;
+        if (targetFps.getAsDouble() <= 0) return;
         double syncTime = lastTime + targetFrameTime;
         while (glfwGetTime() < syncTime) {
             LockSupport.parkNanos(500_000L);

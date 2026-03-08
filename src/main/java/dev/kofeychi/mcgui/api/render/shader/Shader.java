@@ -1,6 +1,5 @@
 package dev.kofeychi.mcgui.api.render.shader;
 
-import dev.kofeychi.mcgui.api.render.vertex.format.Format;
 import dev.kofeychi.mcgui.impl.render.shader.ShaderImpl;
 
 public interface Shader {

@@ -2,7 +2,9 @@ package dev.kofeychi.mcgui.impl.render.vertex;
 
 import dev.kofeychi.mcgui.api.render.vertex.Builder;
 import dev.kofeychi.mcgui.api.render.vertex.Built;
+import dev.kofeychi.mcgui.api.render.vertex.Mesh;
 import dev.kofeychi.mcgui.api.render.vertex.format.Format;
+import dev.kofeychi.mcgui.util.Color;
 import org.lwjgl.system.MemoryUtil;
 
 public class BuilderImpl implements Builder {
@@ -50,6 +52,16 @@ public class BuilderImpl implements Builder {
     }
 
     @Override
+    public Builder color(int c) {
+        return color(Color.ofTransparent(c));
+    }
+
+    @Override
+    public Builder color(Color c) {
+        return color((float) c.getRed() /255, (float) c.getGreen() /255, (float) c.getBlue() /255, (float) c.getAlpha() /255);
+    }
+
+    @Override
     public Builder texture(float u, float v) {
         ensureCapacity(8);
         MemoryUtil.memPutFloat(address + pointer, u);
@@ -86,6 +98,15 @@ public class BuilderImpl implements Builder {
         pointer = 0;
         vertexCount = 0;
         return built;
+    }
+
+    @Override
+    public Mesh buildToMesh() {
+        var b = build();
+        var m = b.toMesh();
+        m.upload();
+        close();
+        return m;
     }
 
     @Override

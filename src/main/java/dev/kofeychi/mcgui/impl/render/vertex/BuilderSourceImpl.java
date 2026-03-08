@@ -14,7 +14,7 @@ public class BuilderSourceImpl implements BuilderSource {
     public Builder getBuilder(CompiledProgram program) {
         return builders.computeIfAbsent(
                 program,
-                id -> Builder.from(1024,program.format())
+                id -> Builder.from(256,program.format())
         );
     }
 
@@ -30,6 +30,7 @@ public class BuilderSourceImpl implements BuilderSource {
             sh.unbind();
             m.close();
         }
+        builders.clear();
     }
 
     @Override
@@ -37,5 +38,10 @@ public class BuilderSourceImpl implements BuilderSource {
         for (Builder builder : builders.values()) {
             builder.close();
         }
+    }
+
+    @Override
+    public void close(Builder builder) {
+        builders.values().remove(builder);
     }
 }

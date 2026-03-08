@@ -1,5 +1,6 @@
 package dev.kofeychi.mcgui.api.render.shader;
 
+import org.joml.Matrix4f;
 import org.joml.Vector2ic;
 import org.joml.Vector3ic;
 import org.joml.Vector4ic;
@@ -29,6 +30,8 @@ public interface Uniforms {
     void setIntVector4(int x, int y, int z, int w);
 
     void setFloatVector4(float x, float y, float z, int w);
+
+    void setFloatMat4(Matrix4f mat);
 
     default void setIntVec4(Vector4ic vec) {
         setIntVector4(vec.x(), vec.y(), vec.z(), vec.w());

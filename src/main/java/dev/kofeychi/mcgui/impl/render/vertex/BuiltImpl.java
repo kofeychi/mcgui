@@ -10,6 +10,7 @@ public class BuiltImpl implements Built {
     private final int size;
     private final int vertexCount;
     private final Format format;
+    private boolean closed = false;
 
     public BuiltImpl(long adress, int size, int vertexCount, Format format) {
         this.adress = adress;
@@ -20,7 +21,12 @@ public class BuiltImpl implements Built {
 
     @Override
     public void close() {
-        MemoryUtil.nmemFree(adress);
+        if(!closed) {
+            MemoryUtil.nmemFree(adress);
+            closed = true;
+        } else {
+            throw new IllegalStateException("Tried to close already closed");
+        }
     }
 
     @Override

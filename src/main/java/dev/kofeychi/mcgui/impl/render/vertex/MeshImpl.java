@@ -3,7 +3,6 @@ package dev.kofeychi.mcgui.impl.render.vertex;
 import dev.kofeychi.mcgui.api.render.vertex.Built;
 import dev.kofeychi.mcgui.api.render.vertex.Mesh;
 import dev.kofeychi.mcgui.api.render.vertex.format.Element;
-import dev.kofeychi.mcgui.todo.render.buf.format.VertexElement;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;

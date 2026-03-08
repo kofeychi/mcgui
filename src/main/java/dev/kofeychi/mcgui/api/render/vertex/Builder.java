@@ -3,7 +3,7 @@ package dev.kofeychi.mcgui.api.render.vertex;
 import dev.kofeychi.mcgui.api.render.MatrixStack;
 import dev.kofeychi.mcgui.api.render.vertex.format.Format;
 import dev.kofeychi.mcgui.impl.render.vertex.BuilderImpl;
-import dev.kofeychi.mcgui.todo.render.buf.BuiltBuffer;
+import dev.kofeychi.mcgui.util.Color;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -20,6 +20,10 @@ public interface Builder extends AutoCloseable {
 
     Builder color(float r, float g, float b, float a);
 
+    Builder color(int c);
+
+    Builder color(Color c);
+
     default Builder vertex(Matrix4f mat,float x, float y, float z) {
         var v = mat.transformPosition(new Vector3f(x,y,z));
         return vertex(v.x,v.y,v.z);
@@ -32,6 +36,8 @@ public interface Builder extends AutoCloseable {
     void push();
 
     Built build();
+
+    Mesh buildToMesh();
 
     void close();
 }
