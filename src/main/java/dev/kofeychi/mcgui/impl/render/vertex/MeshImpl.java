@@ -2,25 +2,24 @@ package dev.kofeychi.mcgui.impl.render.vertex;
 
 import dev.kofeychi.mcgui.api.render.vertex.Built;
 import dev.kofeychi.mcgui.api.render.vertex.Mesh;
+import dev.kofeychi.mcgui.api.render.vertex.format.DrawMode;
 import dev.kofeychi.mcgui.api.render.vertex.format.Element;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import static org.lwjgl.opengl.GL11C.GL_TRIANGLES;
-
 public class MeshImpl implements Mesh {
     private final Built built;
     private int vao;
     private int vbo;
     private final int vertexCount;
-    private int mode;
+    private DrawMode mode;
 
     public MeshImpl(Built built) {
         this.built = built;
         vertexCount = built.vertexCount();
-        mode = GL_TRIANGLES;
+        mode = DrawMode.TRIANGLES;
     }
 
     @Override
@@ -36,16 +35,6 @@ public class MeshImpl implements Mesh {
     @Override
     public int vertexCount() {
         return vertexCount;
-    }
-
-    @Override
-    public int mode() {
-        return mode;
-    }
-
-    @Override
-    public void setMode(int mode) {
-        this.mode = mode;
     }
 
     @Override
@@ -86,7 +75,7 @@ public class MeshImpl implements Mesh {
     @Override
     public void draw() {
         GL30.glBindVertexArray(vao);
-        GL11.glDrawArrays(mode, 0, vertexCount);
+        GL11.glDrawArrays(mode.glType(), 0, vertexCount);
         GL30.glBindVertexArray(0);
     }
 
@@ -94,5 +83,15 @@ public class MeshImpl implements Mesh {
     public void close() {
         GL15.glDeleteBuffers(vbo);
         GL30.glDeleteVertexArrays(vao);
+    }
+
+    @Override
+    public DrawMode mode() {
+        return mode;
+    }
+
+    @Override
+    public void setMode(DrawMode mode) {
+        this.mode = mode;
     }
 }

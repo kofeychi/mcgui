@@ -6,7 +6,6 @@ import org.joml.Vector2f;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.DoubleBuffer;
-import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;

@@ -2,7 +2,6 @@ package dev.kofeychi.mcgui.api.render;
 
 import java.util.concurrent.locks.LockSupport;
 import java.util.function.DoubleSupplier;
-import java.util.function.IntSupplier;
 
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
 

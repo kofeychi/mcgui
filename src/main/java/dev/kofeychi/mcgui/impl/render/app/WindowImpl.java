@@ -146,12 +146,6 @@ public class WindowImpl implements Window {
     @Override
     public void close() {
         initialized = false;
-        free(glfwSetFramebufferSizeCallback(handle,null));
-        free(glfwSetWindowPosCallback(handle,null));
-        free(glfwSetWindowSizeCallback(handle,null));
-        free(glfwSetWindowFocusCallback(handle,null));
-        free(glfwSetWindowIconifyCallback(handle,null));
-        free(glfwSetWindowRefreshCallback(handle,null));
         framebufferSizeEvent.clear();
         positionEvent.clear();
         sizeEvent.clear();
@@ -191,9 +185,14 @@ public class WindowImpl implements Window {
     }
 
     @Override public Event<FramebufferSize> framebufferSize() {return framebufferSizeEvent;}
+
     @Override public Event<Position> position() {return positionEvent;}
+
     @Override public Event<Size> size() {return sizeEvent;}
+
     @Override public Event<Focus> focus() {return focusEvent;}
+
     @Override public Event<Iconify> iconify() {return iconifyEvent;}
+
     @Override public Event<Refresh> refresh() {return refreshEvent;}
 }

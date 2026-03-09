@@ -1,5 +1,6 @@
 package dev.kofeychi.mcgui.api.render.vertex;
 
+import dev.kofeychi.mcgui.api.render.vertex.format.DrawMode;
 import dev.kofeychi.mcgui.impl.render.vertex.MeshImpl;
 
 public interface Mesh extends AutoCloseable {
@@ -13,10 +14,6 @@ public interface Mesh extends AutoCloseable {
 
     int vertexCount();
 
-    int mode();
-
-    void setMode(int mode);
-
     Built built();
 
     void upload();
@@ -24,4 +21,8 @@ public interface Mesh extends AutoCloseable {
     void draw();
 
     void close();
+
+    DrawMode mode();
+
+    void setMode(DrawMode mode);
 }

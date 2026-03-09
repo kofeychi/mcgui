@@ -1,6 +1,5 @@
 package dev.kofeychi.mcgui.impl.render.app;
 
-import dev.kofeychi.mcgui.api.Event;
 import dev.kofeychi.mcgui.api.render.app.Application;
 import dev.kofeychi.mcgui.api.render.app.Render;
 

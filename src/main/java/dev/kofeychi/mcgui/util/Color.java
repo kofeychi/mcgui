@@ -194,6 +194,7 @@ public final class Color {
 
         return Color.HSBtoRGB(avgH, avgS, avgV) & 0xFFFFFF; // вернём как 0xRRGGBB
     }
+
     public static int averageHSVColor(Integer[] colorsRGB) {
         int n = colorsRGB.length;
         if (n == 0) return 0;
@@ -230,6 +231,7 @@ public final class Color {
 
         return Color.HSBtoRGB(avgH, avgS, avgV) & 0xFFFFFF;
     }
+
     public static Color averageHSV(Color[] colors) {
         int n = colors.length;
         float sumS = 0f;
@@ -258,6 +260,7 @@ public final class Color {
 
         return new Color(Color.HSBtoRGB(avgH, avgS, avgV));
     }
+
     public Color factor(float factor) {
         return Color.ofRGBA(
                 this.getRed()*factor,
@@ -266,6 +269,7 @@ public final class Color {
                 this.getAlpha()*factor
         );
     }
+
     public Color factorR(float factor) {
         return Color.ofRGBA(
                 this.getRed()*factor,
@@ -274,6 +278,7 @@ public final class Color {
                 this.getAlpha()
         );
     }
+
     public Color factorG(float factor) {
         return Color.ofRGBA(
                 this.getRed(),
@@ -282,6 +287,7 @@ public final class Color {
                 this.getAlpha()
         );
     }
+
     public Color factorB(float factor) {
         return Color.ofRGBA(
                 this.getRed(),
@@ -290,6 +296,7 @@ public final class Color {
                 this.getAlpha()
         );
     }
+
     public Color factorA(float factor) {
         return Color.ofRGBA(
                 this.getRed(),

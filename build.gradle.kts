@@ -1,12 +1,12 @@
 plugins {
     id("java")
     id("com.gradleup.shadow") version "9.0.0"
+    id("maven-publish")
 }
 group = "dev.kofeychi"
 version = "1.0-SNAPSHOT"
 
 val lwjglVersion = "3.3.6"
-val lwjglNatives = "natives-windows"
 
 repositories {
     mavenCentral()
@@ -32,8 +32,19 @@ dependencies {
 
     libs.forEach {
         implementation("org.lwjgl", it)
-        implementation("org.lwjgl", it, classifier = lwjglNatives)
+        implementation("org.lwjgl", it, classifier = "natives-windows")
+        implementation("org.lwjgl", it, classifier = "natives-linux")
     }
 
     implementation("org.joml:joml:1.10.8")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            artifact(tasks.jar) {
+                artifactId = tasks.jar.get().archiveBaseName.get()
+            }
+        }
+    }
 }

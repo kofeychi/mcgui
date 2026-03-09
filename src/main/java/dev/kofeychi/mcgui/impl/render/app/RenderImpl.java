@@ -7,6 +7,7 @@ import dev.kofeychi.mcgui.api.render.app.Mouse;
 import dev.kofeychi.mcgui.api.render.app.Render;
 import dev.kofeychi.mcgui.api.render.app.Window;
 import dev.kofeychi.mcgui.api.render.shader.Manager;
+import dev.kofeychi.mcgui.api.render.texture.TextureManager;
 import dev.kofeychi.mcgui.api.render.vertex.BuilderSource;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
@@ -23,6 +24,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class RenderImpl implements Render {
+    private final TextureManager textureManager;
     private final Application host;
     private final Window window;
     private final Mouse mouse;
@@ -87,6 +89,7 @@ public class RenderImpl implements Render {
 
     public RenderImpl(Application host) {
         this.host = host;
+        this.textureManager = TextureManager.empty();
         this.window = Window.empty(host);
         this.mouse = Mouse.create(this);
         this.manager = Manager.empty();
@@ -105,7 +108,7 @@ public class RenderImpl implements Render {
             glfwGetFramebufferSize(window.getHandle(),x,y);
             window.framebufferSize().invoker().on(x.get(0), y.get(0));
         }
-        while(!glfwWindowShouldClose(window.getHandle())) {
+        while(!(glfwWindowShouldClose(window.getHandle()))) {
             fps.update();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             setupRenderEvent.invoker().setup(this);
@@ -129,6 +132,10 @@ public class RenderImpl implements Render {
         return manager;
     }
 
+    @Override
+    public TextureManager getTextureManager() {
+        return textureManager;
+    }
 
     @Override
     public FpsController getFpsController() {
@@ -210,10 +217,10 @@ public class RenderImpl implements Render {
 
     @Override
     public void close() {
-        this.window.close();
         this.mouse.close();
+        this.window.close();
         this.manager.close();
         this.builder.close();
-        glfwDestroyWindow(window.getHandle());
+        glfwTerminate();
     }
 }

@@ -3,6 +3,7 @@ package dev.kofeychi.mcgui.api.render.app;
 import dev.kofeychi.mcgui.api.Event;
 import dev.kofeychi.mcgui.api.render.FpsController;
 import dev.kofeychi.mcgui.api.render.shader.Manager;
+import dev.kofeychi.mcgui.api.render.texture.TextureManager;
 import dev.kofeychi.mcgui.api.render.vertex.BuilderSource;
 import dev.kofeychi.mcgui.impl.render.app.RenderImpl;
 
@@ -18,6 +19,8 @@ public interface Render extends Logic,AutoCloseable {
     BuilderSource getSharedSource();
 
     Manager getShaderManager();
+
+    TextureManager getTextureManager();
 
     FpsController getFpsController();
 

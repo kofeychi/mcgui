@@ -3,7 +3,6 @@ package dev.kofeychi.mcgui.api.render.app;
 import dev.kofeychi.mcgui.api.Event;
 import dev.kofeychi.mcgui.impl.render.app.MouseImpl;
 import org.joml.Vector2d;
-import org.lwjgl.glfw.GLFW;
 
 public interface Mouse extends AutoCloseable {
     static Mouse create(Render host) {
@@ -12,11 +11,7 @@ public interface Mouse extends AutoCloseable {
 
     void init(long window);
 
-    void close(long window);
-
-    default void close() {
-        close(GLFW.glfwGetCurrentContext());
-    }
+    void close();
 
     double getX();
 

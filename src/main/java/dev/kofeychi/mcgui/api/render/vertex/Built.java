@@ -21,5 +21,4 @@ public interface Built extends AutoCloseable {
     int vertexCount();
 
     Format format();
-
 }

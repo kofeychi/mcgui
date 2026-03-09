@@ -61,10 +61,10 @@ public class MouseImpl implements Mouse {
     }
 
     @Override
-    public void close(long window) {
-        free(glfwSetCursorPosCallback(window,null));
-        free(glfwSetMouseButtonCallback(window,null));
-        free(glfwSetScrollCallback(window,null));
+    public void close() {
+        positionEvent.clear();
+        scrollEvent.clear();
+        buttonEvent.clear();
     }
 
     @Override
